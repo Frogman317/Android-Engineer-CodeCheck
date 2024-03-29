@@ -7,69 +7,57 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.SearchRepositoryFragmentDirections
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchBinding
 import jp.co.yumemi.android.code_check.model.Repository
+import kotlinx.coroutines.launch
 
-class SearchRepositoryFragment: Fragment(R.layout.fragment_search)
+class SearchFragment: Fragment(R.layout.fragment_search)
 {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
 
-        val _binding= FragmentSearchBinding.bind(view)
+        val binding= FragmentSearchBinding.bind(view)
 
-        val _viewModel= SearchViewModel(requireContext())
+        val viewModel= SearchViewModel()
 
-        val _layoutManager= LinearLayoutManager(requireContext())
-        val _dividerItemDecoration=
-            DividerItemDecoration(requireContext(), _layoutManager.orientation)
-        val _adapter= CustomAdapter(object : CustomAdapter.OnItemClickListener {
-            override fun itemClick(item: Repository){
-                gotoRepositoryFragment(item)
+        val layoutManager= LinearLayoutManager(requireContext())
+        val dividerItemDecoration=
+            DividerItemDecoration(requireContext(), layoutManager.orientation)
+        val adapter= CustomAdapter(object : CustomAdapter.OnItemClickListener {
+            override fun itemClick(repository: Repository){
+                gotoRepositoryFragment(repository)
             }
         })
 
-        _binding.searchInputText
+        binding.searchInputText
             .setOnEditorActionListener{ editText, action, _ ->
                 if (action== EditorInfo.IME_ACTION_SEARCH){
-                    editText.text.toString().let {
-                        _viewModel.searchResults(it).apply{
-                            _adapter.submitList(this)
-                        }
+                    val inputText = editText.text.toString()
+                    lifecycleScope.launch {
+                        val searchResult = viewModel.searchResults(inputText)
+                        adapter.submitList(searchResult)
                     }
                     return@setOnEditorActionListener true
                 }
                 return@setOnEditorActionListener false
             }
 
-        _binding.recyclerView.also{
-            it.layoutManager= _layoutManager
-            it.addItemDecoration(_dividerItemDecoration)
-            it.adapter= _adapter
+        binding.recyclerView.also{
+            it.layoutManager= layoutManager
+            it.addItemDecoration(dividerItemDecoration)
+            it.adapter= adapter
         }
     }
 
-    fun gotoRepositoryFragment(item: Repository)
-    {
-        val _action=
-            SearchRepositoryFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
-        findNavController().navigate(_action)
+    fun gotoRepositoryFragment(repository: Repository) {
+        val action: NavDirections = SearchFragmentDirections
+            .actionRepositoriesFragmentToRepositoryFragment(repository)
+        findNavController().navigate(action)
     }
-}
-
-val diff_util= object: DiffUtil.ItemCallback<Repository>(){
-    override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean
-    {
-        return oldItem.name== newItem.name
-    }
-
-    override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean
-    {
-        return oldItem== newItem
-    }
-
 }
