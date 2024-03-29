@@ -12,9 +12,10 @@ import coil.load
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.FragmentDetailBinding
+import jp.co.yumemi.android.code_check.model.Repository
 
-class DetailFragment : Fragment(R.layout.fragment_detail) {
-
+class DetailFragment : Fragment(R.layout.fragment_detail)
+{
     private val args: DetailFragmentArgs by navArgs()
 
     private var binding: FragmentDetailBinding? = null
@@ -27,14 +28,14 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
         binding = FragmentDetailBinding.bind(view)
 
-        var item = args.item
+        val repository: Repository = args.repository
 
-        _binding.ownerIconView.load(item.ownerIconUrl);
-        _binding.nameView.text = item.name;
-        _binding.languageView.text = item.language;
-        _binding.starsView.text = "${item.stargazersCount} stars";
-        _binding.watchersView.text = "${item.watchersCount} watchers";
-        _binding.forksView.text = "${item.forksCount} forks";
-        _binding.openIssuesView.text = "${item.openIssuesCount} open issues";
+        _binding.ownerIconView.load(repository.ownerIconUrl);
+        _binding.nameView.text = repository.name;
+        _binding.languageView.text = repository.language;
+        _binding.starsView.text = "${repository.stargazersCount} stars";
+        _binding.watchersView.text = "${repository.watchersCount} watchers";
+        _binding.forksView.text = "${repository.forksCount} forks";
+        _binding.openIssuesView.text = "${repository.openIssuesCount} open issues";
     }
 }

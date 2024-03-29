@@ -7,14 +7,14 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import jp.co.yumemi.android.code_check.R
-import jp.co.yumemi.android.code_check.SearchRepositoryFragmentDirections
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchBinding
 import jp.co.yumemi.android.code_check.model.Repository
 
-class SearchRepositoryFragment: Fragment(R.layout.fragment_search)
+class SearchFragment: Fragment(R.layout.fragment_search)
 {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
@@ -28,8 +28,8 @@ class SearchRepositoryFragment: Fragment(R.layout.fragment_search)
         val _dividerItemDecoration=
             DividerItemDecoration(requireContext(), _layoutManager.orientation)
         val _adapter= CustomAdapter(object : CustomAdapter.OnItemClickListener {
-            override fun itemClick(item: Repository){
-                gotoRepositoryFragment(item)
+            override fun itemClick(repository: Repository){
+                gotoRepositoryFragment(repository)
             }
         })
 
@@ -53,23 +53,9 @@ class SearchRepositoryFragment: Fragment(R.layout.fragment_search)
         }
     }
 
-    fun gotoRepositoryFragment(item: Repository)
-    {
-        val _action=
-            SearchRepositoryFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(item = item)
-        findNavController().navigate(_action)
+    fun gotoRepositoryFragment(repository: Repository) {
+        val action: NavDirections = SearchFragmentDirections
+            .actionRepositoriesFragmentToRepositoryFragment(repository)
+        findNavController().navigate(action)
     }
-}
-
-val diff_util= object: DiffUtil.ItemCallback<Repository>(){
-    override fun areItemsTheSame(oldItem: Repository, newItem: Repository): Boolean
-    {
-        return oldItem.name== newItem.name
-    }
-
-    override fun areContentsTheSame(oldItem: Repository, newItem: Repository): Boolean
-    {
-        return oldItem== newItem
-    }
-
 }
