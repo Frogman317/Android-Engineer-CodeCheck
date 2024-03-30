@@ -29,7 +29,7 @@ class SearchFragment: Fragment(R.layout.fragment_search)
 
         val binding= FragmentSearchBinding.bind(view)
 
-        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
+        viewModel = ViewModelProvider(this)[SearchViewModel::class.java]
 
         val layoutManager= LinearLayoutManager(requireContext())
         val dividerItemDecoration=

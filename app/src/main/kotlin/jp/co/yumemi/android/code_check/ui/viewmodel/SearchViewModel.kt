@@ -19,9 +19,11 @@ class SearchViewModel : ViewModel() {
     val searchResults: LiveData<List<Repository>> = _searchResults
 
     suspend fun searchResults(inputText: String) {
-        val results = withContext(Dispatchers.IO) {
-            GithubAPI.getData(inputText)
+        if (inputText != "") {
+            val results = withContext(Dispatchers.IO) {
+                GithubAPI.getData(inputText)
+            }
+            _searchResults.postValue(results)
         }
-        _searchResults.postValue(results)
     }
 }
