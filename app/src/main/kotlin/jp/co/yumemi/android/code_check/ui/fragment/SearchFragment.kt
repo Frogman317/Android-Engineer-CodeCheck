@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
@@ -20,19 +21,20 @@ import kotlinx.coroutines.launch
 
 class SearchFragment: Fragment(R.layout.fragment_search)
 {
-    private lateinit var viewModel: SearchViewModel
+    private lateinit var viewModel : SearchViewModel
+    private lateinit var adapter: RepositoryAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
 
         val binding= FragmentSearchBinding.bind(view)
 
-        viewModel= SearchViewModel()
+        viewModel = ViewModelProvider(this).get(SearchViewModel::class.java)
 
         val layoutManager= LinearLayoutManager(requireContext())
         val dividerItemDecoration=
             DividerItemDecoration(requireContext(), layoutManager.orientation)
-        val adapter= RepositoryAdapter(object : RepositoryAdapter.OnItemClickListener {
+        adapter = RepositoryAdapter(object : RepositoryAdapter.OnItemClickListener {
             override fun itemClick(repository: Repository){
                 gotoRepositoryFragment(repository)
             }
@@ -43,7 +45,7 @@ class SearchFragment: Fragment(R.layout.fragment_search)
                 if (action== EditorInfo.IME_ACTION_SEARCH){
                     val inputText = editText.text.toString()
                     lifecycleScope.launch {
-                        adapter.submitList(viewModel.searchResults(inputText))
+                        viewModel.searchResults(inputText)
                     }
                     return@setOnEditorActionListener true
                 }
@@ -54,6 +56,10 @@ class SearchFragment: Fragment(R.layout.fragment_search)
             it.layoutManager= layoutManager
             it.addItemDecoration(dividerItemDecoration)
             it.adapter= adapter
+        }
+
+        viewModel.searchResults.observe(viewLifecycleOwner) { repositories ->
+            adapter.submitList(repositories)
         }
     }
 
