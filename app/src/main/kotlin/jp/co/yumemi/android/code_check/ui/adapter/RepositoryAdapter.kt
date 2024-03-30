@@ -3,10 +3,12 @@ package jp.co.yumemi.android.code_check.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.Repository
 
@@ -39,8 +41,9 @@ class RepositoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int)
     {
         val item= getItem(position)
-        (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text=
-            item.name
+        (holder.itemView.findViewById<View>(R.id.repositoryNameView) as TextView).text= item.name
+        (holder.itemView.findViewById<View>(R.id.repositoryLanguageView) as TextView).text= item.language
+        (holder.itemView.findViewById<View>(R.id.repositoryImageView) as ImageView).load(item.ownerIconUrl)
 
         holder.itemView.setOnClickListener{
             itemClickListener.itemClick(item)

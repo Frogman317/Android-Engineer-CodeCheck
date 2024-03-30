@@ -8,7 +8,6 @@
         android:id="@+id/ownerIconView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_margin="16dp"
         android:contentDescription="@null"
         android:src="@drawable/jetbrains"
         app:layout_constraintDimensionRatio="1:1"
@@ -49,6 +48,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/nameView" />
 
+    <ImageView
+        android:id="@+id/starsIcon"
+        android:layout_width="18sp"
+        android:layout_height="18sp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/stars"
+        app:layout_constraintStart_toStartOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/nameView"  />
+
     <TextView
         android:id="@+id/starsView"
         android:layout_width="0dp"
@@ -62,6 +72,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/centerGuid"
         app:layout_constraintTop_toBottomOf="@id/nameView" />
+
+    <ImageView
+        android:id="@+id/watchingIcon"
+        android:layout_width="18sp"
+        android:layout_height="18sp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/watching"
+        app:layout_constraintStart_toStartOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/starsView"  />
 
     <TextView
         android:id="@+id/watchersView"
@@ -77,6 +98,17 @@
         app:layout_constraintStart_toStartOf="@id/centerGuid"
         app:layout_constraintTop_toBottomOf="@id/starsView" />
 
+    <ImageView
+        android:id="@+id/forksIcon"
+        android:layout_width="18sp"
+        android:layout_height="18sp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/forks"
+        app:layout_constraintStart_toStartOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/watchersView"  />
+
     <TextView
         android:id="@+id/forksView"
         android:layout_width="0dp"
@@ -90,6 +122,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/centerGuid"
         app:layout_constraintTop_toBottomOf="@id/watchersView" />
+
+    <ImageView
+        android:id="@+id/openIssuesIcon"
+        android:layout_width="18sp"
+        android:layout_height="18sp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@null"
+        android:src="@drawable/issues"
+        app:layout_constraintStart_toStartOf="@id/centerGuid"
+        app:layout_constraintTop_toBottomOf="@id/forksView"  />
 
     <TextView
         android:id="@+id/openIssuesView"
