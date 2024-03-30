@@ -1,7 +1,7 @@
 /*
  * Copyright © 2021 YUMEMI Inc. All rights reserved.
  */
-package jp.co.yumemi.android.code_check.ui
+package jp.co.yumemi.android.code_check.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -14,22 +14,26 @@ import androidx.recyclerview.widget.*
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchBinding
 import jp.co.yumemi.android.code_check.model.Repository
+import jp.co.yumemi.android.code_check.ui.adapter.RepositoryAdapter
+import jp.co.yumemi.android.code_check.ui.SearchFragmentDirections
+import jp.co.yumemi.android.code_check.ui.viewmodel.SearchViewModel
 import kotlinx.coroutines.launch
 
 class SearchFragment: Fragment(R.layout.fragment_search)
 {
+    private lateinit var viewModel: SearchViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
 
         val binding= FragmentSearchBinding.bind(view)
 
-        val viewModel= SearchViewModel()
+        viewModel= SearchViewModel()
 
         val layoutManager= LinearLayoutManager(requireContext())
         val dividerItemDecoration=
             DividerItemDecoration(requireContext(), layoutManager.orientation)
-        val adapter= CustomAdapter(object : CustomAdapter.OnItemClickListener {
+        val adapter= RepositoryAdapter(object : RepositoryAdapter.OnItemClickListener {
             override fun itemClick(repository: Repository){
                 gotoRepositoryFragment(repository)
             }
@@ -40,8 +44,7 @@ class SearchFragment: Fragment(R.layout.fragment_search)
                 if (action== EditorInfo.IME_ACTION_SEARCH){
                     val inputText = editText.text.toString()
                     lifecycleScope.launch {
-                        val searchResult = viewModel.searchResults(inputText)
-                        adapter.submitList(searchResult)
+                        adapter.submitList(viewModel.searchResults(inputText))
                     }
                     return@setOnEditorActionListener true
                 }
@@ -56,8 +59,8 @@ class SearchFragment: Fragment(R.layout.fragment_search)
     }
 
     fun gotoRepositoryFragment(repository: Repository) {
-        val action: NavDirections = SearchFragmentDirections
-            .actionRepositoriesFragmentToRepositoryFragment(repository)
+        val action: NavDirections =
+            SearchFragmentDirections.actionRepositoriesFragmentToRepositoryFragment(repository)
         findNavController().navigate(action)
     }
 }
