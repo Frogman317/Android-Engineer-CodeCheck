@@ -15,7 +15,6 @@ import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentSearchBinding
 import jp.co.yumemi.android.code_check.model.Repository
 import jp.co.yumemi.android.code_check.ui.adapter.RepositoryAdapter
-import jp.co.yumemi.android.code_check.ui.SearchFragmentDirections
 import jp.co.yumemi.android.code_check.ui.viewmodel.SearchViewModel
 import kotlinx.coroutines.launch
 

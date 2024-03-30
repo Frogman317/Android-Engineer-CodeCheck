@@ -11,7 +11,6 @@ import coil.load
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.FragmentDetailBinding
 import jp.co.yumemi.android.code_check.model.Repository
-import jp.co.yumemi.android.code_check.ui.DetailFragmentArgs
 
 class DetailFragment : Fragment(R.layout.fragment_detail)
 {
